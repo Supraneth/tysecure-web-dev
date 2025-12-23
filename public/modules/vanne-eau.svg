@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1220" />
+      <stop offset="0.55" stop-color="#0E1A2D" />
+      <stop offset="1" stop-color="#0B1220" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1152.0 252.00000000000003) rotate(140) scale(1440.0 810.0)">
+      <stop stop-color="#F59E0B" stop-opacity="0.20" />
+      <stop offset="1" stop-color="#F59E0B" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0V80" fill="none" stroke="#334155" stroke-opacity="0.35" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" rx="32" fill="url(#bg)" />
+  <rect width="1600" height="900" rx="32" fill="url(#glow)" />
+  <rect width="1600" height="900" rx="32" fill="url(#grid)" opacity="0.18" />
+
+  <g transform="translate(800.0 450.0) scale(6) translate(-50 -50)" stroke="#F59E0B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    
+      <path d="M50 18c-12 18-22 28-22 42a22 22 0 0 0 44 0c0-14-10-24-22-42z" />
+    
+  </g>
+
+  <text x="80" y="120" fill="#E2E8F0" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="52" font-weight="700">Vanne d'arrêt d'eau automatique</text>
+  <text x="80" y="170" fill="#94A3B8" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="26">Illustration TySecure</text>
+</svg>

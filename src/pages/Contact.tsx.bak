@@ -1,0 +1,298 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useComposition } from '@/hooks/useComposition';
+import { 
+  Send,
+  Mail,
+  Phone,
+  MapPin,
+  CheckCircle
+} from 'lucide-react';
+import { toast } from 'sonner';
+
+export default function Contact() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { prestations, modules, selectedAftercare } = useComposition();
+
+  // Build composition summary for the message
+  const compositionSummary = () => {
+    const items: string[] = [];
+    if (prestations.length > 0) {
+      items.push(`Prestations: ${prestations.map(p => p.name).join(', ')}`);
+    }
+    if (modules.length > 0) {
+      items.push(`Modules: ${modules.map(m => m.name).join(', ')}`);
+    }
+    if (selectedAftercare) {
+      items.push(`Plan Care: ${selectedAftercare.name}`);
+    }
+    return items.length > 0 ? items.join('\n') : '';
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    toast.success('Message envoyé avec succès !');
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="pt-24 pb-16">
+          <div className="section-container">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="max-w-lg mx-auto text-center py-16"
+            >
+              <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                <CheckCircle className="w-10 h-10 text-primary" />
+              </div>
+              <h1 className="font-display text-3xl font-bold mb-4">
+                Message envoyé !
+              </h1>
+              <p className="text-muted-foreground mb-8">
+                Merci pour votre demande. Nous reviendrons vers vous dans les 48h ouvrées.
+              </p>
+              <Button variant="hero" onClick={() => setIsSubmitted(false)}>
+                Envoyer un autre message
+              </Button>
+            </motion.div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      <main className="pt-24 pb-16">
+        <section className="py-8 md:py-16">
+          <div className="section-container">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-12"
+            >
+              <span className="badge-amber mb-4 inline-block">Contact</span>
+              <h1 className="font-display text-4xl sm:text-5xl font-bold mb-4">
+                Réserver un <span className="text-gradient">Audit</span>
+              </h1>
+              <p className="text-muted-foreground max-w-xl mx-auto">
+                Prêt à reprendre le contrôle de votre maison ? Décrivez-nous votre projet 
+                et nous reviendrons vers vous rapidement.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              {/* Contact form */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="firstName" className="block text-sm font-medium mb-2">
+                        Prénom *
+                      </label>
+                      <Input
+                        id="firstName"
+                        required
+                        placeholder="Jean"
+                        className="bg-card border-border"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="lastName" className="block text-sm font-medium mb-2">
+                        Nom *
+                      </label>
+                      <Input
+                        id="lastName"
+                        required
+                        placeholder="Dupont"
+                        className="bg-card border-border"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium mb-2">
+                      Email *
+                    </label>
+                    <Input
+                      id="email"
+                      type="email"
+                      required
+                      placeholder="jean.dupont@example.com"
+                      className="bg-card border-border"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                      Téléphone
+                    </label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="06 12 34 56 78"
+                      className="bg-card border-border"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="location" className="block text-sm font-medium mb-2">
+                      Localisation du projet *
+                    </label>
+                    <Input
+                      id="location"
+                      required
+                      placeholder="Ville, Département"
+                      className="bg-card border-border"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium mb-2">
+                      Votre projet *
+                    </label>
+                    <Textarea
+                      id="message"
+                      required
+                      rows={5}
+                      placeholder="Décrivez votre projet, vos besoins, votre habitat actuel..."
+                      defaultValue={compositionSummary() ? `Ma composition actuelle:\n${compositionSummary()}\n\n` : ''}
+                      className="bg-card border-border resize-none"
+                    />
+                  </div>
+
+                  {/* Auto-filled composition */}
+                  {(prestations.length > 0 || modules.length > 0 || selectedAftercare) && (
+                    <div className="p-4 rounded-xl bg-primary/10 border border-primary/30">
+                      <p className="text-sm font-medium mb-2">Votre composition actuelle :</p>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        {prestations.map(p => (
+                          <li key={p.id}>• {p.name}</li>
+                        ))}
+                        {modules.map(m => (
+                          <li key={m.id}>• {m.name}</li>
+                        ))}
+                        {selectedAftercare && (
+                          <li>• {selectedAftercare.name}</li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
+
+                  <Button 
+                    type="submit" 
+                    variant="hero" 
+                    size="lg" 
+                    className="w-full"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      'Envoi en cours...'
+                    ) : (
+                      <>
+                        Envoyer ma demande
+                        <Send className="w-5 h-5" />
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </motion.div>
+
+              {/* Contact info */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                className="space-y-8"
+              >
+                <div className="p-6 rounded-2xl bg-card border border-border">
+                  <h3 className="font-display text-xl font-bold mb-6">Informations de contact</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <Mail className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium">Email</p>
+                        <a href="mailto:contact@tysecure.fr" className="text-muted-foreground hover:text-primary transition-colors">
+                          contact@tysecure.fr
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <Phone className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium">Téléphone</p>
+                        <p className="text-muted-foreground">Sur rendez-vous uniquement</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <MapPin className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium">Zone d'intervention</p>
+                        <p className="text-muted-foreground">Bretagne et Grand Ouest</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-card border border-primary/20">
+                  <h3 className="font-display text-xl font-bold mb-4">
+                    Pourquoi l'Audit ?
+                  </h3>
+                  <ul className="space-y-3">
+                    {[
+                      'Analyse complète de votre habitat',
+                      'Diagnostic technique par un ingénieur',
+                      'Rapport détaillé (15-20 pages)',
+                      'Chiffrage précis des travaux',
+                      'Déductible si Build ≥ 7 000€'
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                        <span className="text-muted-foreground">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-4 text-2xl font-bold text-primary">990€ HT</p>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

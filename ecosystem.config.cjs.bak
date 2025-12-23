@@ -1,0 +1,30 @@
+module.exports = {
+  apps: [
+    {
+      name: "tysecure-site",
+      cwd: __dirname,
+      script: "backend/dist/server.js",
+      instances: 1,
+      exec_mode: "fork",
+
+      // Charge les secrets depuis backend/.env (bien)
+      env_file: "/var/www/tysecure-home-sovereignty-main/backend/dist/.env",
+      env: {
+        NODE_ENV: "production",
+        PORT: 3000,
+      },
+
+      // Logs -> fichiers demandés
+      out_file: "/var/log/tysecure-website/backend.log",
+      error_file: "/var/log/tysecure-website/backend.log",
+      merge_logs: true,
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z",
+
+      // Robustesse
+      time: true,
+      max_memory_restart: "250M",
+      max_restarts: 10,
+      restart_delay: 2000,
+    },
+  ],
+};
